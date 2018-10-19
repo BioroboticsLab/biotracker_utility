@@ -17,7 +17,7 @@ set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME} CACHE STRING
 
 set(TN BT_Utility)
 add_library(${TN} STATIC)
-set_target_properties(${TN} PROPERTIES OUTPUT_NAME BT_utility)
+set_target_properties(${TN} PROPERTIES OUTPUT_NAME bt_utility)
 include(Src/CMakeLists.txt)
 
 install(

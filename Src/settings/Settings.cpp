@@ -1,7 +1,5 @@
 #include "settings/Settings.h"
 
-#include <boost/filesystem.hpp>
-
 #include <QFile>
 #include <QMessageBox>
 

@@ -1,6 +1,6 @@
 @PACKAGE_INIT@
 
-find_package(BT_Interfaces 0.1.0 REQUIRED)
+find_package(BT_Interfaces 0.1 REQUIRED)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Xml Network Widgets)
 

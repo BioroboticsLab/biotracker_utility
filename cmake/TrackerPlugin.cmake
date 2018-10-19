@@ -25,4 +25,4 @@ set_target_properties(${TN} PROPERTIES
     CXX_EXTENSIONS NO
 )
 
-target_link_libraries (${TN} RF_Utility)
+target_link_libraries (${TN} BT_Utility)

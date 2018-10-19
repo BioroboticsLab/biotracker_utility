@@ -12,6 +12,13 @@ target_link_libraries(${TN} BT_Interfaces)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Xml Network Widgets)
 target_link_libraries (${TN} Qt5::Core Qt5::Gui Qt5::Xml Qt5::Network Qt5::Widgets)
+find_package(Boost REQUIRED system filesystem chrono timer)
+target_link_libraries(${TN} 
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_CHRONO_LIBRARY}
+  ${Boost_TIMER_LIBRARY}
+)
 
 set_target_properties(${TN} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(${TN} PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
