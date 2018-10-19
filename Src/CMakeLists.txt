@@ -7,7 +7,7 @@ target_include_directories(${TN} PUBLIC
     $<INSTALL_INTERFACE:${INSTALL_INCLUDEDIR}>
 )
 
-find_package(RF_Interfaces 0.1 REQUIRED)
+find_package(BT_Interfaces 0.1 REQUIRED)
 target_link_libraries(${TN} BT_Interfaces)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Xml Network Widgets)
@@ -23,16 +23,15 @@ set_target_properties(${TN} PROPERTIES
 
 target_sources(${TN}
 PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/settings/ParamNames.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/settings/Settings.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/settings/StringTranslator.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/settings/SystemCompatibilityCheck.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/TrackedComponents/TrackedComponentFactory.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/TrackedComponents/TrackedElement.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/TrackedComponents/TrackedTrajectory.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/CvHelper.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/misc.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/stringTools.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedComponentFactory.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedElement.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedTrajectory.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/util/CvHelper.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/util/misc.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/util/stringTools.cpp"
 )
 
 set(${TN}_PUBLIC_HEADERS
@@ -41,20 +40,20 @@ set(${TN}_PUBLIC_HEADERS
     "${CMAKE_CURRENT_LIST_DIR}/settings/Settings.h"
     "${CMAKE_CURRENT_LIST_DIR}/settings/StringTranslator.h"
     "${CMAKE_CURRENT_LIST_DIR}/settings/SystemCompatibilityCheck.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/TrackedComponents/TrackedComponentFactory.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/TrackedComponents/TrackedElement.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/TrackedComponents/TrackedTrajectory.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/CvHelper.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/Exceptions.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/misc.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/MutexWrapper.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/PanZoomState.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/platform.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/QtRaiiWrapper.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/ScreenHelper.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/singleton.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/stdext.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/stringTools.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/ImagePreProcessor.h"
-    "${CMAKE_CURRENT_LIST_DIR}/settings/util/IImageProcessor.h"
+    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedComponentFactory.h"
+    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedElement.h"
+    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedTrajectory.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/CvHelper.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/Exceptions.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/misc.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/MutexWrapper.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/PanZoomState.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/platform.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/QtRaiiWrapper.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/util/ScreenHelper.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/singleton.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/stdext.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/stringTools.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/ImagePreProcessor.h"
+    "${CMAKE_CURRENT_LIST_DIR}/util/IImageProcessor.h"
 )
