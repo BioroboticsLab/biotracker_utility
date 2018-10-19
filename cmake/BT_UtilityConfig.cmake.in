@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+find_package(RF_Interfaces 0.1.0 REQUIRED)
+
+find_package(Qt5 REQUIRED COMPONENTS Charts)
+
+include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/Modules")
