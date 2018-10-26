@@ -4,7 +4,7 @@
 #include <QString>       
 #include <QStringList>       
 
-int split(std::string &txt, std::vector<std::string> &strs, char ch)
+int BioTrackerUtilsMisc::split(std::string &txt, std::vector<std::string> &strs, char ch)
 {
 	std::string::size_type pos = txt.find(ch);
 	std::string::size_type initialPos = 0;
@@ -24,7 +24,7 @@ int split(std::string &txt, std::vector<std::string> &strs, char ch)
 	return strs.size();
 }
 
-std::string getTimeAndDate(std::string prefix, std::string suffix)
+std::string BioTrackerUtilsMisc::getTimeAndDate(std::string prefix, std::string suffix)
 {
 	// time_t  timetitle;
 	// std::string timeInfo = prefix;
@@ -59,7 +59,7 @@ std::string getTimeAndDate(std::string prefix, std::string suffix)
     return out;
 }
 
-std::vector<cv::Point> stringToCVPointVec(std::string arena) {
+std::vector<cv::Point> BioTrackerUtilsMisc::stringToCVPointVec(std::string arena) {
 	std::vector<cv::Point> pts;
 
 	QString qarena(arena.c_str());
@@ -73,20 +73,20 @@ std::vector<cv::Point> stringToCVPointVec(std::string arena) {
 }
 
 
-std::vector<cv::Point> QVecToCvVec(std::vector<QPoint> q) {
+std::vector<cv::Point> BioTrackerUtilsMisc::QVecToCvVec(std::vector<QPoint> q) {
 	std::vector<cv::Point> v;
 	for (int i = 0; i < q.size(); i++)
 		v.push_back(cv::Point(q[i].x(), q[i].y()));
 	return v;
 }
-std::vector<QPoint> CvVecToQVec(std::vector<cv::Point> q) {
+std::vector<QPoint> BioTrackerUtilsMisc::CvVecToQVec(std::vector<cv::Point> q) {
 	std::vector<QPoint> v;
 	for (int i = 0; i < q.size(); i++)
 		v.push_back(QPoint(q[i].x, q[i].y));
 	return v;
 }
 
-std::string cvPointsToString(std::vector<cv::Point> ac) {
+std::string BioTrackerUtilsMisc::cvPointsToString(std::vector<cv::Point> ac) {
 
 	std::string arena = "";
 	for (int i = 0; i < ac.size(); i++) 

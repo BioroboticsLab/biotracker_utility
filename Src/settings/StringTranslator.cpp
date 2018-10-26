@@ -1,1 +1,0 @@
-#include "settings/StringTranslator.h"
