@@ -43,7 +43,5 @@ set(${TN}_PUBLIC_HEADERS
     "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedTrajectory.h"
     "${CMAKE_CURRENT_LIST_DIR}/util/misc.h"
     "${CMAKE_CURRENT_LIST_DIR}/util/singleton.h"
-    "${CMAKE_CURRENT_LIST_DIR}/util/ImagePreProcessor.h"
-    "${CMAKE_CURRENT_LIST_DIR}/util/IImageProcessor.h"
     "${CMAKE_CURRENT_LIST_DIR}/IConfig.h"
 )
