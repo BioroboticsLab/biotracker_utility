@@ -30,17 +30,17 @@ set_target_properties(${TN} PROPERTIES
 
 target_sources(${TN}
 PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedComponentFactory.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedElement.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedTrajectory.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/util/misc.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/IConfig.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedComponentFactory.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedElement.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedTrajectory.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/misc.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/IConfig.cpp"
 )
 
 set(${TN}_PUBLIC_HEADERS
-    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedComponentFactory.h"
-    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedElement.h"
-    "${CMAKE_CURRENT_LIST_DIR}/TrackedComponents/TrackedTrajectory.h"
-    "${CMAKE_CURRENT_LIST_DIR}/util/misc.h"
-    "${CMAKE_CURRENT_LIST_DIR}/IConfig.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedComponentFactory.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedElement.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedTrajectory.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/misc.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Utility/IConfig.h"
 )
