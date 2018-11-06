@@ -7,7 +7,9 @@ target_include_directories(${TN} PUBLIC
     $<INSTALL_INTERFACE:${INSTALL_INCLUDEDIR}>
 )
 
-find_package(BT_Interfaces 0.1 REQUIRED)
+if( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR )
+    find_package(BT_Interfaces 0.1 REQUIRED)
+endif()
 target_link_libraries(${TN} BT_Interfaces)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Xml Network Widgets)
