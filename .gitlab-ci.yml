@@ -52,7 +52,8 @@ build windows:
     - New-Item -ItemType Directory -Force 'dependencies'
     - $name='BT_Interfaces'; Move-Item -Force "$name-*" dependencies/$name
     - $env:CMAKE_PREFIX_PATH="$((Get-Item -Path '.').FullName)/dependencies;$env:VCPKG_INSTALL_DIR"
-    - C:/VsDevEnv.ps1 -arch=amd64
+    - . /Library.ps1
+    - VSDevEnv -arch=amd64 -vcvars_ver="14.15"
   script:
     - cmake -Bbuild "-H." -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_PREFIX_PATH="$env:CMAKE_PREFIX_PATH" -DCMAKE_SUPPRESS_REGENERATION=ON -DCMAKE_SKIP_PACKAGE_ALL_DEPENDENCY=ON
     - ninja -C build
@@ -65,7 +66,8 @@ build windows[cuda]:
     - New-Item -ItemType Directory -Force 'dependencies'
     - $name='BT_Interfaces'; Move-Item -Force "$name-*" dependencies/$name
     - $env:CMAKE_PREFIX_PATH="$((Get-Item -Path '.').FullName)/dependencies;$env:VCPKG_CUDA_INSTALL_DIR"
-    - C:/VsDevEnv.ps1 -arch=amd64
+    - . /Library.ps1
+    - VSDevEnv -arch=amd64 -vcvars_ver="14.15"
   script:
     - cmake -Bbuild "-H." -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_PREFIX_PATH="$env:CMAKE_PREFIX_PATH" -DCMAKE_SUPPRESS_REGENERATION=ON -DCMAKE_SKIP_PACKAGE_ALL_DEPENDENCY=ON
     - ninja -C build
