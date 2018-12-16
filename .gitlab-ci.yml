@@ -4,73 +4,80 @@ stages:
   - deploy
 
 
-.base ubuntu-18.04: &base_ubuntu_18_04
+.ubuntu-18.04:
   tags: [ linux, docker ]
-  image: git.imp.fu-berlin.de:5000/bioroboticslab/robofish/docker:ubuntu-18.04
+  image: git.imp.fu-berlin.de:5000/bioroboticslab/robofish/docker:devel-ubuntu18.04
 
-.base windows: &base_windows
+.windows:
   tags: [ windows, docker ]
-  image: git.imp.fu-berlin.de:5000/bioroboticslab/robofish/docker:windows
+  image: git.imp.fu-berlin.de:5000/bioroboticslab/robofish/docker:devel-windows
 
 
-.build ubuntu-18.04: &build_ubuntu_18_04
+.gcc8: &gcc8
+  CC: gcc-8
+  CXX: g++-8
+
+.msvc15.9: &msvc15_9
+  VSDevEnv -arch=amd64 -vcvars_ver="14.16"
+
+.debug: &debug
+  CMAKE_BUILD_TYPE: Debug
+
+.release: &release
+  CMAKE_BUILD_TYPE: Release
+
+
+.build ubuntu-18.04:
+  extends: .ubuntu-18.04
   stage: build
-  <<: *base_ubuntu_18_04
-  variables:
-    CC: gcc-8
-    CXX: g++-8
   artifacts:
     paths:
       - build
     expire_in: 1 day
+  script:
+    - cmake -Bbuild -H. -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE" -G Ninja -DCMAKE_SUPPRESS_REGENERATION=ON -DCMAKE_SKIP_PACKAGE_ALL_DEPENDENCY=ON
+    - ninja -C build
 
-.build windows: &build_windows
+.build windows:
+  extends: .windows
   stage: build
-  <<: *base_windows
   artifacts:
     paths:
       - build
     expire_in: 1 day
+  script:
+    - cmake -Bbuild "-H." -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE" -G Ninja -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_DIR/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET="$env:VCPKG_TRIPLET" -DCMAKE_SUPPRESS_REGENERATION=ON -DCMAKE_SKIP_PACKAGE_ALL_DEPENDENCY=ON
+    - ninja -C build
 
 build ubuntu-18.04:
-  <<: *build_ubuntu_18_04
+  extends: .build ubuntu-18.04
+  variables:
+    <<: [ *gcc8, *release ]
   before_script:
-    - 'curl -o artifacts.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.imp.fu-berlin.de/api/v4/projects/3608/jobs/artifacts/master/download?job=package%20ubuntu-18.04"'
-    - 7z e artifacts.zip; 7z e '*.tar.xz'; rm *.tar.xz; 7z x '*.tar'; rm *.tar
-    - mkdir dependencies
-    - name='BT_Interfaces'; mv $name-* dependencies/$name
-    - export CMAKE_PREFIX_PATH="$(pwd)/dependencies"
-  script:
-    - cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_PREFIX_PATH="$CMAKE_PREFIX_PATH" -DCMAKE_SUPPRESS_REGENERATION=ON -DCMAKE_SKIP_PACKAGE_ALL_DEPENDENCY=ON
-    - ninja -C build
+    - . /etc/profile.d/robofish.sh
+    - gitlab-fetch-artifacts bioroboticslab%2Fbiotracker%2Finterfaces master package%20ubuntu-18.04
+    - cmake-integrate-package BT_Interfaces
 
 build windows:
-  <<: *build_windows
+  extends: .build windows
+  variables:
+    <<: [ *release ]
   before_script:
-    - 'curl.exe -o artifacts.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.imp.fu-berlin.de/api/v4/projects/3608/jobs/artifacts/master/download?job=package%20windows"'
-    - 7z e artifacts.zip; 7z e *.tar.xz; Remove-Item -Force *.tar.xz; 7z x *.tar; Remove-Item -Force *.tar
-    - New-Item -ItemType Directory -Force 'dependencies'
-    - $name='BT_Interfaces'; Move-Item -Force "$name-*" dependencies/$name
-    - $env:CMAKE_PREFIX_PATH="$((Get-Item -Path '.').FullName)/dependencies;$env:VCPKG_INSTALL_DIR"
-    - . /Library.ps1
-    - VSDevEnv -arch=amd64 -vcvars_ver="14.15"
-  script:
-    - cmake -Bbuild "-H." -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_PREFIX_PATH="$env:CMAKE_PREFIX_PATH" -DCMAKE_SUPPRESS_REGENERATION=ON -DCMAKE_SKIP_PACKAGE_ALL_DEPENDENCY=ON
-    - ninja -C build
+    - . $Profile
+    - *msvc15_9
+    - GitLab-Fetch-Artifacts bioroboticslab%2Fbiotracker%2Finterfaces master package%20windows
+    - CMake-Integrate-Package BT_Interfaces
 
-build windows[cuda]:
-  <<: *build_windows
+build windows[debug]:
+  extends: .build windows
+  variables:
+    <<: [ *debug ]
   before_script:
-    - 'curl.exe -o artifacts.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.imp.fu-berlin.de/api/v4/projects/3608/jobs/artifacts/master/download?job=package%20windows%5bcuda%5d"'
-    - 7z e artifacts.zip; 7z e *.tar.xz; Remove-Item -Force *.tar.xz; 7z x *.tar; Remove-Item -Force *.tar
-    - New-Item -ItemType Directory -Force 'dependencies'
-    - $name='BT_Interfaces'; Move-Item -Force "$name-*" dependencies/$name
-    - $env:CMAKE_PREFIX_PATH="$((Get-Item -Path '.').FullName)/dependencies;$env:VCPKG_CUDA_INSTALL_DIR"
-    - . /Library.ps1
-    - VSDevEnv -arch=amd64 -vcvars_ver="14.15"
-  script:
-    - cmake -Bbuild "-H." -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_PREFIX_PATH="$env:CMAKE_PREFIX_PATH" -DCMAKE_SUPPRESS_REGENERATION=ON -DCMAKE_SKIP_PACKAGE_ALL_DEPENDENCY=ON
-    - ninja -C build
+    - . $Profile
+    - *msvc15_9
+    - GitLab-Fetch-Artifacts bioroboticslab%2Fbiotracker%2Finterfaces master package%20windows%5bdebug%5d
+    - CMake-Integrate-Package BT_Interfaces
+
 
 .package: &package
   stage: package
@@ -82,20 +89,27 @@ build windows[cuda]:
     - ninja -C build package
 
 package ubuntu-18.04:
-  <<: *base_ubuntu_18_04
+  extends: .ubuntu-18.04
   dependencies:
     - build ubuntu-18.04
   <<: *package
 
 package windows:
-  <<: *base_windows
+  extends: .windows
   dependencies:
     - build windows
   <<: *package
 
-package windows[cuda]:
-  <<: *base_windows
+package windows[debug]:
+  extends: .windows
   dependencies:
-    - build windows[cuda]
+    - build windows[debug]
   <<: *package
 
+
+trigger dependents:
+ extends: .ubuntu-18.04
+ stage: deploy
+ script:
+    - . /etc/profile.d/robofish.sh
+    - gitlab-trigger-pipeline bioroboticslab%2Fbiotracker%2biotracker $CI_JOB_TOKEN master
