@@ -112,4 +112,4 @@ trigger dependents:
  stage: deploy
  script:
     - . /etc/profile.d/robofish.sh
-    - gitlab-trigger-pipeline bioroboticslab%2Fbiotracker%2biotracker $CI_JOB_TOKEN master
+    - gitlab-trigger-pipeline bioroboticslab%2Fbiotracker%2Fbiotracker $CI_JOB_TOKEN master
