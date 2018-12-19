@@ -1,46 +1,57 @@
 ##############################################################
 #### Biotracker: Utility
 ##############################################################
+set(target ${PROJECT_NAME})
+add_library(${target} STATIC)
 
-target_include_directories(${TN} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
-    $<INSTALL_INTERFACE:${INSTALL_INCLUDEDIR}>
-)
+find_package(biotracker-interfaces 0.2 REQUIRED)
+target_link_libraries(${target} biotracker-interfaces)
 
-find_package(BT_Interfaces 0.1 REQUIRED)
-target_link_libraries(${TN} BT_Interfaces)
-
-find_package(Qt5 REQUIRED COMPONENTS Core Gui Xml Network Widgets)
-target_link_libraries (${TN} Qt5::Core Qt5::Gui Qt5::Xml Qt5::Network Qt5::Widgets)
 find_package(Boost REQUIRED system filesystem chrono timer)
-target_link_libraries(${TN} 
+target_link_libraries(${target} 
   ${Boost_FILESYSTEM_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_CHRONO_LIBRARY}
   ${Boost_TIMER_LIBRARY}
 )
 
-set_target_properties(${TN} PROPERTIES POSITION_INDEPENDENT_CODE ON)
-set_target_properties(${TN} PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
-set_target_properties(${TN} PROPERTIES
+install(
+    TARGETS
+        ${PROJECT_NAME}
+    EXPORT
+        ${PROJECT_NAME}Targets
+    RUNTIME DESTINATION "${INSTALL_BINDIR}"
+    ARCHIVE DESTINATION "${INSTALL_LIBDIR}"
+)
+
+target_include_directories(${target} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
+    $<INSTALL_INTERFACE:${INSTALL_INCLUDEDIR}>
+)
+
+set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(${target} PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
+set_target_properties(${target} PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
 
-target_sources(${TN}
+target_sources(${target}
 PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedComponentFactory.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedElement.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedTrajectory.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/misc.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/IConfig.cpp"
+    "Utility/TrackedComponents/TrackedComponentFactory.cpp"
+    "Utility/TrackedComponents/TrackedElement.cpp"
+    "Utility/TrackedComponents/TrackedTrajectory.cpp"
+    "Utility/misc.cpp"
+    "Utility/IConfig.cpp"
 )
 
-set(${TN}_PUBLIC_HEADERS
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedComponentFactory.h"
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedElement.h"
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/TrackedComponents/TrackedTrajectory.h"
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/misc.h"
-    "${CMAKE_CURRENT_LIST_DIR}/Utility/IConfig.h"
+install_headers(
+    HEADERS
+    "Utility/TrackedComponents/TrackedComponentFactory.h"
+    "Utility/TrackedComponents/TrackedElement.h"
+    "Utility/TrackedComponents/TrackedTrajectory.h"
+    "Utility/misc.h"
+    "Utility/IConfig.h"
+    DESTINATION "${INSTALL_INCLUDEDIR}"
 )

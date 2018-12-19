@@ -1,10 +1,8 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.13)
 
 exec_program("git" ${CMAKE_CURRENT_SOURCE_DIR} ARGS "describe --abbrev=0 --tags" OUTPUT_VARIABLE GIT_TAG)
 
-cmake_policy (SET CMP0020 NEW)
-
-project(BT_Utility
+project(biotracker-utility
     VERSION ${GIT_TAG}
     LANGUAGES CXX)
 
@@ -15,28 +13,14 @@ set(INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR} CACHE PATH "Installation directory fo
 set(INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME} CACHE PATH "Installation directory for header files")
 set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME} CACHE STRING "Installation directory for cmake configuration files")
 
-set(TN BT_Utility)
-add_library(${TN} STATIC)
-set_target_properties(${TN} PROPERTIES OUTPUT_NAME bt_utility)
-include(Src/CMakeLists.txt)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+include(Headers)
 
-install(
-    TARGETS
-        BT_Utility
-    EXPORT
-        ${PROJECT_NAME}Targets
-    RUNTIME DESTINATION "${INSTALL_BINDIR}"
-    ARCHIVE DESTINATION "${INSTALL_LIBDIR}"
-)
-foreach(file ${BT_Utility_PUBLIC_HEADERS})
-    file(RELATIVE_PATH rel_path "${CMAKE_CURRENT_LIST_DIR}/Src" ${file})
-    get_filename_component(install_path ${rel_path} DIRECTORY)
-    install(FILES ${file} DESTINATION "${INSTALL_INCLUDEDIR}/${install_path}")
-endforeach()
+add_subdirectory(Src)
 
 export(
     TARGETS
-        BT_Utility
+        ${PROJECT_NAME}
     FILE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
 )
 
