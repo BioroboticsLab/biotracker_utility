@@ -4,7 +4,9 @@
 set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
 
-find_package(biotracker-interfaces 0.2 REQUIRED)
+if( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR )
+    find_package(biotracker-interfaces 0.2 REQUIRED)
+endif()
 target_link_libraries(${target} biotracker-interfaces)
 
 find_package(Boost REQUIRED system filesystem chrono timer)
