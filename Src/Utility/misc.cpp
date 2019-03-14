@@ -2,7 +2,7 @@
 
 #include <QPoint>             // QPoint
 #include <QString>       
-#include <QStringList>       
+#include <QStringList>
 
 int BioTrackerUtilsMisc::split(std::string &txt, std::vector<std::string> &strs, char ch)
 {
@@ -37,9 +37,6 @@ std::string BioTrackerUtilsMisc::getTimeAndDate(std::string prefix, std::string 
 	// timeInfo += suffix;
 	// return timeInfo;
 
-
-
-
 	time_t rawtime;
     struct tm * timeinfo;
 
@@ -54,6 +51,9 @@ std::string BioTrackerUtilsMisc::getTimeAndDate(std::string prefix, std::string 
 	std::string timeStampF(t);
 
 	out += timeStampF;
+	out += "_";
+	out += std::to_string(_getpid()); 
+
 	out += suffix;
 
     return out;
