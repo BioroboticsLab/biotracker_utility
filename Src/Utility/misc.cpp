@@ -3,6 +3,7 @@
 #include <QPoint>             // QPoint
 #include <QString>       
 #include <QStringList>
+#include <QCoreApplication>
 
 int BioTrackerUtilsMisc::split(std::string &txt, std::vector<std::string> &strs, char ch)
 {
@@ -52,7 +53,7 @@ std::string BioTrackerUtilsMisc::getTimeAndDate(std::string prefix, std::string 
 
 	out += timeStampF;
 	out += "_";
-	out += std::to_string(_getpid()); 
+	out += std::to_string(QCoreApplication::applicationPid()); 
 
 	out += suffix;
 

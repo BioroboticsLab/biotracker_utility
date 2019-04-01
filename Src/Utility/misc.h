@@ -3,8 +3,6 @@
 #include <string>
 #include <time.h>
 #include <cv.h>
-#include <stdio.h>
-#include <process.h>
 #include <QPoint>
 
 namespace BioTrackerUtilsMisc{
