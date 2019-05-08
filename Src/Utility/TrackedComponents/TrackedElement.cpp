@@ -11,8 +11,11 @@ TrackedElement::TrackedElement(QObject *parent, QString name, int id) :
 {
 	_x = 0;
 	_y = 0;
+	_xpx = 0;
+	_xpx = 0;
 	_valid = false;
 	_fixed = false;
+	_coordU = "px";
 }
 
 QString TrackedElement::getName()
@@ -41,6 +44,14 @@ void  TrackedElement::setY(float val) {
 	_y = val;
 };
 
+void  TrackedElement::setXpx(float val) {
+	_xpx = val;
+};
+
+void  TrackedElement::setYpx(float val) {
+	_ypx = val;
+};
+
 float  TrackedElement::getX() {
     return _x;
 }
@@ -50,11 +61,11 @@ float  TrackedElement::getY() {
 }
 
 float  TrackedElement::getXpx() {
-    return _x;
+    return _xpx;
 }
 
 float  TrackedElement::getYpx() {
-    return _y;
+    return _ypx;
 }
 
 void TrackedElement::operate()

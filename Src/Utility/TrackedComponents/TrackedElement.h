@@ -22,14 +22,16 @@ public:
     virtual ~TrackedElement() {};
 
 	virtual QString getName();
-    virtual QString getCoordinateUnit() override { return "px"; };
+    virtual QString getCoordinateUnit() override { return _coordU; };
+    
+    virtual void setCoordinateUnit(QString unit) override { _coordU = unit; };
 
     virtual void  setX(float val) override;
     virtual void  setY(float val) override;
     virtual void  setW(float w) override {};
     virtual void  setH(float h) override {};
-    virtual void  setXpx(float val) override {};
-    virtual void  setYpx(float val) override {};
+    virtual void  setXpx(float val) override;
+    virtual void  setYpx(float val) override;
     virtual void  setWpx(float w) override {};
     virtual void  setHpx(float h) override {};
 	virtual void  setRad(float r) override {};
@@ -99,8 +101,11 @@ private:
     QString _timeString;                         /**< timestamp a formatted as string */
 	float _x;
 	float _y;
+    float _xpx;
+    float _ypx;
 	int _id;
 	bool _valid;
 	bool _fixed;
+    QString _coordU;
 };
 
