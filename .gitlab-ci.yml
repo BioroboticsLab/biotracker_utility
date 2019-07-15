@@ -42,7 +42,7 @@ build ubuntu-18.04:
     <<: [ *gcc8, *release ]
   before_script:
     - ./.gitlab-ci.py prepare
-      --dependency robofish-interfaces bioroboticslab/robofish/interfaces master 'package ubuntu-18.04'
+      --dependency biotracker-interfaces bioroboticslab/biotracker/interfaces master 'package ubuntu-18.04'
 
 build windows-1809:
   extends: .windows-1809
@@ -51,7 +51,7 @@ build windows-1809:
     <<: [ *msvc15_9, *release ]
   before_script:
     - ./.gitlab-ci.py prepare
-      --dependency robofish-interfaces bioroboticslab/robofish/interfaces master 'package windows-1809'
+      --dependency biotracker-interfaces bioroboticslab/biotracker/interfaces master 'package windows-1809'
 
 build windows-1809[debug]:
   extends: .windows-1809
@@ -60,7 +60,7 @@ build windows-1809[debug]:
     <<: [ *msvc15_9, *debug ]
   before_script:
     - ./.gitlab-ci.py prepare
-      --dependency robofish-interfaces bioroboticslab/robofish/interfaces master 'package windows-1809[debug]'
+      --dependency biotracker-interfaces bioroboticslab/biotracker/interfaces master 'package windows-1809[debug]'
 
 
 .package: &package
@@ -90,7 +90,7 @@ package windows-1809[debug]:
   <<: *package
 
 
-trigger robofish/robo_control:
+trigger biotracker/biotracker:
   stage: deploy
   trigger:
     project: bioroboticslab/biotracker/biotracker
