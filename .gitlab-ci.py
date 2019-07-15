@@ -32,11 +32,8 @@ def fetch_artifacts(project, reference, job):
     headers = {'JOB-TOKEN': env['CI_JOB_TOKEN']}
     return ZipFile(
         BytesIO(
-            urlopen(Request(url,
-                            headers=headers),
-                    context=ssl._create_unverified_context()).read()
-        )
-    )
+            urlopen(Request(url, headers=headers),
+                    context=ssl._create_unverified_context()).read()))
 
 
 def extract_cmake_package(artifacts, name):
@@ -44,51 +41,32 @@ def extract_cmake_package(artifacts, name):
         if Path(filename).match(f'{name}-*.tar.xz'):
             with tarfile.open(fileobj=BytesIO(artifacts.read(filename))) as f:
                 f.extractall('vendor')
-            shutil.move(next(Path('vendor').glob(f'{name}-*/')), f'vendor/{name}')
+            shutil.move(next(Path('vendor').glob(f'{name}-*/')),
+                        f'vendor/{name}')
 
 
 def enable_cmake_package_discovery(name):
     if system() == 'Windows':
-        check_call(
-            [
-                'powershell',
-                '&',
-                'cmd.exe',
-                '/c',
-                'mklink',
-                '/J',
-                f'"C:/Program Files/{name}"',
-                f'"$(resolve-path vendor/{name})"'
-            ],
-            stdout=DEVNULL
-        )
+        check_call([
+            'powershell', '&', 'cmd.exe', '/c', 'mklink', '/J',
+            f'"C:/Program Files/{name}"', f'"$(resolve-path vendor/{name})"'
+        ],
+                   stdout=DEVNULL)
     elif system() == 'Linux':
         symlink(Path(f'vendor/{name}').resolve(), f'/usr/local/{name}')
     else:
         assert False
 
 
-def integrate_cmake_package(artifacts, name):
-    extract_cmake_package(artifacts, name)
-    enable_cmake_package_discovery(name)
-
-
 if system() == 'Windows':
 
     def setup_msvc():
         msvc_path = 'C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/Common7/Tools'
-        lines = check_output(
-            [
-                'cmd',
-                '/c',
-                'VsDevCmd.bat',
-                '-arch=amd64',
-                f'-vcvars_ver={env["VCVARS_VER"]}',
-                '&',
-                'set'
-            ],
-            cwd=msvc_path
-        ).decode('utf-8').splitlines()
+        lines = check_output([
+            'cmd', '/c', 'VsDevCmd.bat', '-arch=amd64',
+            f'-vcvars_ver={env["VCVARS_VER"]}', '&', 'set'
+        ],
+                             cwd=msvc_path).decode('utf-8').splitlines()
         for line in lines:
             split = line.split('=')
             if len(split) != 2:
@@ -102,7 +80,7 @@ if system() == 'Windows':
 def prepare(args):
     for name, project, reference, job in args.dependencies:
         with fetch_artifacts(project, reference, job) as artifacts:
-            integrate_cmake_package(artifacts, name)
+            extract_cmake_package(artifacts, name)
 
 
 def build(args):
@@ -113,6 +91,7 @@ def build(args):
     command += ['-S', '.']
     command += ['-B', 'build']
     command += ['-G', 'Ninja']
+    command += define('CMAKE_PREFIX_PATH', Path('vendor').resolve())
     command += define_env('CMAKE_BUILD_TYPE')
     command += define('CMAKE_SUPPRESS_REGENERATION', 'ON')
     command += define('CMAKE_SKIP_PACKAGE_ALL_DEPENDENCY', 'ON')
@@ -120,8 +99,7 @@ def build(args):
     if system() == 'Windows':
         command += define(
             'CMAKE_TOOLCHAIN_FILE',
-            env['VCPKG_DIR'] + '/scripts/buildsystems/vcpkg.cmake'
-        )
+            env['VCPKG_DIR'] + '/scripts/buildsystems/vcpkg.cmake')
         command += define('VCPKG_TARGET_TRIPLET', env['VCPKG_TRIPLET'])
     check_call(command)
 
@@ -140,16 +118,12 @@ if __name__ == '__main__':
 
     prepare_parser = subparsers.add_parser('prepare')
     prepare_parser.set_defaults(task=prepare)
-    prepare_parser.add_argument(
-        '--dependency',
-        dest='dependencies',
-        nargs=4,
-        action='append',
-        metavar=('PACKAGE',
-                 'PROJECT',
-                 'REFERENCE',
-                 'JOB')
-    )
+    prepare_parser.add_argument('--dependency',
+                                dest='dependencies',
+                                nargs=4,
+                                action='append',
+                                metavar=('PACKAGE', 'PROJECT', 'REFERENCE',
+                                         'JOB'))
 
     build_parser = subparsers.add_parser('build')
     build_parser.set_defaults(task=build)
