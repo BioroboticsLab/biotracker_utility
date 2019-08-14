@@ -2,7 +2,7 @@
 #define MISC_H
 #include <string>
 #include <time.h>
-#include <cv.h>
+#include <opencv2/opencv.hpp>
 #include <QPoint>
 
 namespace BioTrackerUtilsMisc{

@@ -3,7 +3,7 @@
 #include "QGraphicsItem"
 #include "Interfaces/IModel/IModelTrackedComponent.h"
 #include "QString"
-#include <cv.h>
+#include <opencv2/opencv.hpp>
 #include <qdatetime.h>
 #include <ctime>
 
