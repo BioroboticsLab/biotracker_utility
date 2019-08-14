@@ -41,7 +41,6 @@ public:
         _timeSysclck = t;
     };
     virtual void  setTime(qint64 t) override {
-        std::string::size_type sz = 0;
         long long ll = t / 1000;
         std::time_t tm(ll);
         _timeSysclck = std::chrono::system_clock::from_time_t(tm);
@@ -93,7 +92,7 @@ public:
 
 	// ITrackedPoint interface
 public:
-	void operate();
+	void operate() override;
 
 private:
     std::chrono::system_clock::time_point _timeSysclck;

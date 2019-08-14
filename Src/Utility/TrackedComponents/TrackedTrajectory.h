@@ -21,7 +21,7 @@ class TrackedTrajectory : public IModelTrackedTrajectory {
 
 	// ITrackedComponent interface
 public:
-	void operate();
+	void operate() override;
 
 	// ITrackedObject interface
 public:
