@@ -1,6 +1,7 @@
 #pragma once
 #include <QString>
-#include <cv.h>
+#include <opencv2/opencv.hpp>
+
 class IConfig 
 {
 public:
