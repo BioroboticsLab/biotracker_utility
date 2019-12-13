@@ -43,6 +43,9 @@ build centos-7:
   <<: *build
   variables:
     <<: [ *release ]
+  before_script:
+    - ./.gitlab-ci.py prepare
+      --dependency biotracker-interfaces bioroboticslab/biotracker/interfaces master 'package centos-7'
 
 build ubuntu-18.04:
   extends: .ubuntu-18.04
