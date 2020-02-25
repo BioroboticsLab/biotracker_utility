@@ -5,7 +5,7 @@ set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
 
 if( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR )
-    find_package(biotracker-interfaces 0.2 REQUIRED)
+    find_package(biotracker-interfaces REQUIRED)
 endif()
 target_link_libraries(${target} biotracker-interfaces)
 

@@ -1,7 +1,5 @@
 function(add_behavior_plugin target)
 
-    exec_program("git" ${CMAKE_CURRENT_SOURCE_DIR} ARGS "log --pretty=format:%h -n 1" OUTPUT_VARIABLE GIT_HASH)
-
     if("$ENV{USERNAME}" STREQUAL "ContainerAdministrator")
         # Note: This is a workaround for Qt5's "moc" in Windows Docker getting
         #       "System cannot find the file" errors when trying to read
@@ -12,8 +10,6 @@ function(add_behavior_plugin target)
     endif()
 
     add_library (${target} MODULE ${ARGN})
-
-    target_compile_definitions(${target} PRIVATE CURRENT_GIT_HASH="${GIT_HASH}")
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/plugin.json.in ${METADATA_DIR}/plugin.json)
     target_include_directories(${target} PRIVATE ${METADATA_DIR})
