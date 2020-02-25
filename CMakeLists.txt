@@ -53,7 +53,6 @@ install(
 install(
     FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/TrackerPlugin.cmake
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/VSSugar.cmake
     DESTINATION ${INSTALL_CONFIGDIR}/Modules/${PROJECT_NAME}
 )
 
