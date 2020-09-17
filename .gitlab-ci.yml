@@ -66,3 +66,4 @@ trigger biotracker/biotracker:
     - master
   trigger:
     project: bioroboticslab/biotracker/biotracker
+    project: bioroboticslab/biotracker/backgroundsubtraction_tracker
