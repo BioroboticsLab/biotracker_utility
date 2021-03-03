@@ -70,6 +70,7 @@ trigger biotracker/biotracker:
 trigger biotracker/backgroundsubtraction_tracker:
   stage: trigger
   only:
-    - master
+    - snapshot_20210303
   trigger:
     project: bioroboticslab/biotracker/backgroundsubtraction_tracker
+    branch: snapshot_20210303
