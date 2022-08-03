@@ -12,8 +12,9 @@ public:
     virtual QList<QString> getElementTypes() override;
     // ITrackedComponentFactory interface
 protected:
-    virtual IModelTrackedComponent *createTrackedElement(QString name) override;
-    virtual IModelTrackedComponent *createTrackedObject(QString name) override;
-    virtual IModelTrackedComponent *createTrackedTrajectory(QString name) override;
+    virtual IModelTrackedComponent* createTrackedElement(
+        QString name) override;
+    virtual IModelTrackedComponent* createTrackedObject(QString name) override;
+    virtual IModelTrackedComponent* createTrackedTrajectory(
+        QString name) override;
 };
-

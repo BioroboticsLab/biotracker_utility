@@ -1,28 +1,31 @@
 #include "IConfig.h"
 #include <QStandardPaths>
 
-QString IConfig::configLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-QString IConfig::dataLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+QString IConfig::configLocation = QStandardPaths::writableLocation(
+    QStandardPaths::AppConfigLocation);
+QString IConfig::dataLocation = QStandardPaths::writableLocation(
+    QStandardPaths::AppDataLocation);
 
-cv::Mat IConfig::asMat(QString str){
+cv::Mat IConfig::asMat(QString str)
+{
     return asMat(str.toStdString());
 }
 
-std::vector<std::string> explode(std::string const & s, char delim)
+std::vector<std::string> explode(std::string const& s, char delim)
 {
-	std::vector<std::string> result;
-	std::istringstream iss(s);
+    std::vector<std::string> result;
+    std::istringstream       iss(s);
 
-	for (std::string token; std::getline(iss, token, delim); )
-	{
-		result.push_back(std::move(token));
-	}
+    for (std::string token; std::getline(iss, token, delim);) {
+        result.push_back(std::move(token));
+    }
 
-	return result;
+    return result;
 }
 
-cv::Mat IConfig::asMat(std::string str){
-    std::vector<std::string> row = explode(str, ';');
+cv::Mat IConfig::asMat(std::string str)
+{
+    std::vector<std::string> row  = explode(str, ';');
     std::vector<std::string> cols = explode(row[0], '#');
 
     cv::Mat m(row.size(), cols.size(), CV_32F);
@@ -37,15 +40,16 @@ cv::Mat IConfig::asMat(std::string str){
     return m;
 };
 
-
-std::string IConfig::asStdString(cv::Mat m){
+std::string IConfig::asStdString(cv::Mat m)
+{
     return asQString(m).toStdString();
 }
 
-QString IConfig::asQString(cv::Mat m){
+QString IConfig::asQString(cv::Mat m)
+{
     std::string result;
-    int w = m.size().width;
-    int h = m.size().height;
+    int         w = m.size().width;
+    int         h = m.size().height;
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
             result += std::to_string(m.at<float>(i, j));
@@ -56,4 +60,3 @@ QString IConfig::asQString(cv::Mat m){
     }
     return QString(result.c_str());
 };
-
